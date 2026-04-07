@@ -1,42 +1,78 @@
 <template>
   <div class="app">
-    <header class="top-nav">
-      <div class="nav-container">
-        <div class="logo">
-          <h1>{{ t('nav.companyName') }}</h1>
-          <span class="subtitle">{{ t('nav.subtitle') }}</span>
-        </div>
-        <nav class="nav-tabs">
-          <router-link to="/" :class="{ active: $route.path === '/' }">
-            {{ t('nav.overview') }}
-          </router-link>
-          <router-link to="/inventory" :class="{ active: $route.path === '/inventory' }">
-            {{ t('nav.inventory') }}
-          </router-link>
-          <router-link to="/orders" :class="{ active: $route.path === '/orders' }">
-            {{ t('nav.orders') }}
-          </router-link>
-          <router-link to="/spending" :class="{ active: $route.path === '/spending' }">
-            {{ t('nav.finance') }}
-          </router-link>
-          <router-link to="/demand" :class="{ active: $route.path === '/demand' }">
-            {{ t('nav.demandForecast') }}
-          </router-link>
-          <router-link to="/reports" :class="{ active: $route.path === '/reports' }">
-            Reports
-          </router-link>
-        </nav>
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <h1>{{ t('nav.companyName') }}</h1>
+        <span class="sidebar-subtitle">{{ t('nav.subtitle') }}</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <router-link to="/" class="nav-item" :class="{ active: $route.path === '/' }">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75">
+            <rect x="2" y="2" width="7" height="7" rx="1.5"/>
+            <rect x="11" y="2" width="7" height="7" rx="1.5"/>
+            <rect x="2" y="11" width="7" height="7" rx="1.5"/>
+            <rect x="11" y="11" width="7" height="7" rx="1.5"/>
+          </svg>
+          <span>{{ t('nav.overview') }}</span>
+        </router-link>
+
+        <router-link to="/inventory" class="nav-item" :class="{ active: $route.path === '/inventory' }">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75">
+            <path d="M3 7l7-4 7 4v9a1 1 0 01-1 1H4a1 1 0 01-1-1V7z"/>
+            <path d="M8 17V10h4v7"/>
+          </svg>
+          <span>{{ t('nav.inventory') }}</span>
+        </router-link>
+
+        <router-link to="/orders" class="nav-item" :class="{ active: $route.path === '/orders' }">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75">
+            <path d="M6 2h8a1 1 0 011 1v14a1 1 0 01-1 1H6a1 1 0 01-1-1V3a1 1 0 011-1z"/>
+            <path d="M7 6h6M7 9h6M7 12h4"/>
+          </svg>
+          <span>{{ t('nav.orders') }}</span>
+        </router-link>
+
+        <router-link to="/spending" class="nav-item" :class="{ active: $route.path === '/spending' }">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75">
+            <circle cx="10" cy="10" r="8"/>
+            <path d="M10 6v1m0 6v1M8 10c0-.8.9-1.5 2-1.5s2 .7 2 1.5-.9 1.5-2 1.5-2 .7-2 1.5.9 1.5 2 1.5 2-.7 2-1.5"/>
+          </svg>
+          <span>{{ t('nav.finance') }}</span>
+        </router-link>
+
+        <router-link to="/demand" class="nav-item" :class="{ active: $route.path === '/demand' }">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75">
+            <path d="M3 14l4-5 4 3 5-7"/>
+            <path d="M14 5h3v3"/>
+          </svg>
+          <span>{{ t('nav.demandForecast') }}</span>
+        </router-link>
+
+        <router-link to="/reports" class="nav-item" :class="{ active: $route.path === '/reports' }">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75">
+            <rect x="3" y="3" width="14" height="14" rx="2"/>
+            <path d="M7 13V10M10 13V7M13 13v-2"/>
+          </svg>
+          <span>Reports</span>
+        </router-link>
+      </nav>
+
+      <div class="sidebar-footer">
         <LanguageSwitcher />
         <ProfileMenu
           @show-profile-details="showProfileDetails = true"
           @show-tasks="showTasks = true"
         />
       </div>
-    </header>
-    <FilterBar />
-    <main class="main-content">
-      <router-view />
-    </main>
+    </aside>
+
+    <div class="main-area">
+      <FilterBar />
+      <main class="main-content">
+        <router-view />
+      </main>
+    </div>
 
     <ProfileDetailsModal
       :is-open="showProfileDetails"
@@ -178,100 +214,105 @@ body {
 
 .app {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   min-height: 100vh;
 }
 
-.top-nav {
+/* ── Sidebar ─────────────────────────────────── */
+.sidebar {
+  width: 240px;
+  min-width: 240px;
   background: #ffffff;
-  border-bottom: 1px solid #e2e8f0;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  border-right: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 16px;
   position: sticky;
   top: 0;
-  z-index: 100;
+  height: 100vh;
+  overflow-y: auto;
 }
 
-.nav-container {
-  max-width: 1600px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  padding: 0 2rem;
-  height: 70px;
+.sidebar-logo {
+  padding: 0 8px 24px;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 16px;
 }
 
-.nav-container > .nav-tabs {
-  margin-left: auto;
-  margin-right: 1rem;
-}
-
-.nav-container > .language-switcher {
-  margin-right: 1rem;
-}
-
-.logo {
-  display: flex;
-  align-items: baseline;
-  gap: 0.75rem;
-}
-
-.logo h1 {
-  font-size: 1.375rem;
+.sidebar-logo h1 {
+  font-size: 1rem;
   font-weight: 700;
   color: #0f172a;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.02em;
 }
 
-.subtitle {
-  font-size: 0.813rem;
-  color: #64748b;
-  font-weight: 400;
-  padding-left: 0.75rem;
-  border-left: 1px solid #e2e8f0;
+.sidebar-subtitle {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin-top: 2px;
+  display: block;
 }
 
-.nav-tabs {
+/* ── Nav items ───────────────────────────────── */
+.sidebar-nav {
   display: flex;
-  gap: 0.25rem;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
 }
 
-.nav-tabs a {
-  padding: 0.625rem 1.25rem;
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: 7px;
   color: #64748b;
   text-decoration: none;
+  font-size: 0.875rem;
   font-weight: 500;
-  font-size: 0.938rem;
-  border-radius: 6px;
-  transition: all 0.2s ease;
-  position: relative;
+  transition: background 0.15s ease, color 0.15s ease;
 }
 
-.nav-tabs a:hover {
-  color: #0f172a;
+.nav-item svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.nav-item:hover {
   background: #f1f5f9;
+  color: #0f172a;
 }
 
-.nav-tabs a.active {
-  color: #2563eb;
+.nav-item.active {
   background: #eff6ff;
+  color: #2563eb;
 }
 
-.nav-tabs a.active::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: #2563eb;
+/* ── Sidebar footer ──────────────────────────── */
+.sidebar-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 1px solid #e2e8f0;
+  margin-top: auto;
+}
+
+/* ── Main area ───────────────────────────────── */
+.main-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: #f8fafc;
 }
 
 .main-content {
   flex: 1;
-  max-width: 1600px;
-  width: 100%;
-  margin: 0 auto;
   padding: 1.5rem 2rem;
+  max-width: 100%;
 }
 
 .page-header {
